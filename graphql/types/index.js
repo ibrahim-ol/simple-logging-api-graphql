@@ -29,9 +29,8 @@ const ProjectType = new GraphQLObjectType({
         },
         logs: {
             type: GraphQLList(GraphQLNonNull(LogType)),
-            resolve(parent) {
-                console.log(parent);
-                return Log.find({ project: parent });
+            resolve(parent, args, context) {
+                return context.logsLoader.load(parent._id);
             },
         },
     }),

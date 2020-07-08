@@ -25,17 +25,8 @@ const RootQueryType = new gql.GraphQLObjectType({
         },
         getProjects: {
             type: gql.GraphQLList(ProjectType),
-            resolve(parent, args, context, info) {
-                const parsedResolveInfoFragment = parseResolveInfo(info);
-                const { fields } = simplifyParsedResolveInfoFragmentWithType(
-                    parsedResolveInfoFragment,
-                    ProjectType
-                );
-                let requestForLogs = false;
-                if (fields.logs) {
-                    requestForLogs = true;
-                }
-                return resolvers.getProjects(context.token, requestForLogs);
+            resolve(parent, args, context) {
+                return resolvers.getProjects(context.token);
             },
         },
         getLogs: {
@@ -58,7 +49,6 @@ const RootMutationType = new gql.GraphQLObjectType({
                 log_input: { type: gql.GraphQLNonNull(LogInputType) },
             },
             resolve(parent, args, context) {
-                console.log(parent, args, context);
                 return resolvers.addToLogs(context.token, args.log_input);
             },
         },

@@ -33,11 +33,8 @@ ${uniqString}
         };
     },
 
-    getProjects: async (apiKey, fetchLogs) => {
+    getProjects: async (apiKey) => {
         const user = await getUser(apiKey);
-        if (fetchLogs) {
-            return Project.find({ user }).populate("Log");
-        }
         return Project.find({ user });
     },
 
@@ -48,8 +45,8 @@ ${uniqString}
     },
     addToLogs: async (apiKey, { project, message, stacktrace, timestamp }) => {
         const user = await getUser(apiKey);
-        // get the project by name and if it doesnt exist create it
         let _project = await Project.findOne({ name: project.toUpperCase() });
+        console.log(_project);
         if (!_project) {
             _project = new Project({ name: project.toUpperCase(), user });
             _project.save();
@@ -61,8 +58,10 @@ ${uniqString}
             created_at: timestamp,
         });
         log.save();
-        _project.logs.push(log._id);
-        _project.save();
         return log;
+    },
+    batchLogLoader: async (keys) => {
+        const logs = await Log.find({ project: { $in: keys } });
+        return keys.map((k) => logs.filter((l) => l.project.equals(k)));
     },
 };

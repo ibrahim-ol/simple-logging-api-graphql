@@ -23,10 +23,10 @@
 
     -   apikey is mailed to you
 
--   getProjects(api_key)
+-   getProjects()
 
--   getLogs(api_key, project_name)
+-   getLogs(project_name)
 
 ## Mutations
 
--   add to log(apiKey, project_name, log_message, log)stacktrace)
+-   add to log(apiKey, project_name, message, stacktrace, timestamp)

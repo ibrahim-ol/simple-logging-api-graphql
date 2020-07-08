@@ -10,12 +10,6 @@ const ProjectSchema = Schema({
         ref: "Dependent",
         required: true,
     },
-    logs: [
-        {
-            type: Types.ObjectId,
-            ref: "Log",
-        },
-    ],
     created_at: { type: Date, default: Date.now() },
 });
 
